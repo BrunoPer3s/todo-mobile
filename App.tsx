@@ -1,16 +1,20 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
+import { DarkThemeProvider, useDarkTheme } from './src/hooks/DarkTheme';
 import { Home } from './src/pages/Home';
 
 export default function App() {
+  const { isDarkMode } = useDarkTheme();
   return (
-    <>
-      <StatusBar 
-        backgroundColor="transparent" 
-        translucent 
-        barStyle="light-content" 
-      />
-      <Home />
-    </>
+    <DarkThemeProvider>
+        <StatusBar 
+          backgroundColor="transparent" 
+          translucent 
+          barStyle="light-content" 
+        />
+        <Home />
+    </DarkThemeProvider>
   );
 }
+
+

@@ -1,10 +1,12 @@
 import React from 'react';
 import { FlatList, TouchableOpacity, View, Text, StyleSheet, FlatListProps } from 'react-native';
+import { useDarkTheme } from '../hooks/DarkTheme';
 
 function FlatListHeaderComponent() {
+  const { isDarkMode } = useDarkTheme();
   return (
     <View>
-      <Text style={styles.header}>Minhas tasks</Text>
+      <Text style={[styles.header, isDarkMode && styles.headerDark]}>Minhas tasks</Text>
     </View>
   )
 }
@@ -20,6 +22,7 @@ interface MyTasksListProps {
 }
 
 export function MyTasksList({ tasks, onLongPress, onPress }: MyTasksListProps) {
+  const { isDarkMode } = useDarkTheme();
   return (
     <FlatList
       data={tasks}
@@ -28,17 +31,17 @@ export function MyTasksList({ tasks, onLongPress, onPress }: MyTasksListProps) {
         return (
           <TouchableOpacity
             testID={`button-${index}`}
-            activeOpacity={0.7}
+            activeOpacity={1}
             onPress={() => onPress(item.id)}
             onLongPress={() => onLongPress(item.id)}
-            style={item.done ? styles.taskButtonDone : styles.taskButton}
+            style={item.done ? [styles.taskButtonDone, isDarkMode && styles.taskButtonDoneDark] : styles.taskButton}
           >
             <View 
               testID={`marker-${index}`}
-              style={item.done ? styles.taskMarkerDone : styles.taskMarker}
+              style={[item.done ? styles.taskMarkerDone : styles.taskMarker, isDarkMode && styles.taskMarkerDark]}
             />
             <Text 
-              style={item.done ? styles.taskTextDone : styles.taskText}
+              style={[item.done ? [styles.taskTextDone, isDarkMode && styles.taskTextDoneDark] : styles.taskText, isDarkMode && styles.taskTextDark]}
             >
               {item.title}
             </Text>
@@ -63,6 +66,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: 'Poppins-SemiBold'
   },
+  headerDark: {
+    color: '#565BFF'
+  },
   taskButton: {
     flex: 1,
     paddingHorizontal: 10,
@@ -80,8 +86,14 @@ const styles = StyleSheet.create({
     borderColor: '#3D3D4D',
     marginRight: 10
   },
+  taskMarkerDark: {
+    borderColor: '#565bff',
+  },
   taskText: {
     color: '#3D3D4D',
+  },
+  taskTextDark: {
+    color: '#E1E1E6'
   },
   taskButtonDone: {
     flex: 1,
@@ -93,6 +105,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
+  taskButtonDoneDark: {
+    backgroundColor: 'rgba(33, 33, 54, 0.3)'
+  },
   taskMarkerDone: {
     height: 16,
     width: 16,
@@ -103,5 +118,8 @@ const styles = StyleSheet.create({
   taskTextDone: {
     color: '#A09CB1',
     textDecorationLine: 'line-through'
+  },
+  taskTextDoneDark: {
+    opacity: 0.6
   }
 })
